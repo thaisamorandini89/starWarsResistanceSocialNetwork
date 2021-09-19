@@ -31,4 +31,18 @@ public class LocalizacaoService {
 		Localizacao entity = obj.orElseThrow(() -> new EntityNotFoundException("Entidade não encontrada"));
 		return new LocalizacaoDTO(entity);
 	}
+
+	@Transactional(readOnly = true)
+	public LocalizacaoDTO insert(LocalizacaoDTO dto) {
+		Localizacao entity = new Localizacao();
+		copyToEntity(dto, entity);
+		entity = repository.save(entity);
+		return new LocalizacaoDTO(entity);
+	}
+
+	private void copyToEntity(LocalizacaoDTO dto, Localizacao entity) {
+		entity.setX(dto.getX());
+		entity.setY(dto.getY());
+		entity.setBase(dto.getBase());
+	}
 }
